@@ -20,13 +20,17 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build with Maven
-        run: mvn clean install -DskipTests
-
-      - name: Run tests
-        run: mvn test
+      - name: Build and test with coverage verification
+        run: mvn clean verify
         env:
           DB_URL: jdbc:h2:mem:testdb
           DB_USERNAME: sa
           DB_PASSWORD: ""
           JWT_SECRET: dGVzdC1zZWNyZXQta2V5LWZvci1jaS10ZXN0aW5n
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-coverage-report
+          path: target/site/jacoco/
