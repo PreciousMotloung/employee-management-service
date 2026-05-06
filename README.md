@@ -6,15 +6,15 @@ A Spring Boot REST API for managing employees, departments, and user authenticat
 
 | Technology | Version |
 |------------|---------|
-| Java | 17 |
-| Spring Boot | 3.2.5 |
+| Java | 17+ (tested with Java 26) |
+| Spring Boot | 3.4.5 |
 | Spring Security | 6.x |
-| Spring Data JPA | 3.2.x |
-| PostgreSQL | 16 |
-| Flyway | 9.x |
+| Spring Data JPA | 3.4.x |
+| PostgreSQL | 16+ (tested with PostgreSQL 18) |
+| Flyway | 10.x |
 | JWT (jjwt) | 0.11.5 |
-| Springdoc OpenAPI | 2.5.0 |
-| Lombok | latest |
+| Springdoc OpenAPI | 2.8.6 |
+| Lombok | 1.18.38 |
 | JaCoCo | 0.8.12 |
 | JUnit 5 + Mockito | latest |
 | Docker | multi-stage build |
@@ -31,14 +31,25 @@ docker-compose up --build    # starts PostgreSQL + app
 
 ```bash
 # Ensure PostgreSQL is running and set environment variables
+
+# Linux/macOS
 export DB_URL=jdbc:postgresql://localhost:5432/employee_management
 export DB_USERNAME=postgres
 export DB_PASSWORD=yourpassword
 export JWT_SECRET=your_base64_encoded_secret_key
 
-mvn clean install
+# Windows (PowerShell)
+$env:DB_URL="jdbc:postgresql://localhost:5432/employee_management"
+$env:DB_USERNAME="postgres"
+$env:DB_PASSWORD="yourpassword"
+$env:JWT_SECRET="your_base64_encoded_secret_key"
+
+mvn clean package -DskipTests
 java -jar target/employee-management-service-0.0.1-SNAPSHOT.jar
 ```
+
+> **Note:** `JWT_SECRET` must be a Base64-encoded string of at least 256 bits. Example:
+> `bXlTdXBlclNlY3JldEtleUZvckpXVEF1dGhlbnRpY2F0aW9uMTIzNDU2Nzg=`
 
 ## API Endpoints
 
